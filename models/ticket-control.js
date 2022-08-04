@@ -2,9 +2,9 @@ const path = require('path');
 const fs = require('fs');
 
 class Ticket {
-    constructor() {
-        this.number  = '';
-        this.desktop = '';
+    constructor( number, desktop ) {
+        this.number  = number;
+        this.desktop = desktop;
     }
 };
 
@@ -48,6 +48,38 @@ class TicketControl {
         
         const dbPath = path.join( __dirname, '../db/data.json');
         fs.writeFileSync( dbPath, JSON.stringify( this.toJson ) ); 
+    };
+
+    //next ticket
+    next() {
+        this.last += 1;
+        const ticket = new Ticket(this.last, null);
+        this.tickets.push( ticket );
+
+        this.saveDB();
+
+        return 'Ticket ' + ticket.number;
+    };
+
+    //attend ticket
+    attentionTicket ( desktop ) {
+        // if there is not any tickets
+        if( this.tickets.length === 0 ) {
+            return null;
+        };
+
+        const ticket = this.tickets.shift(); //this.tickets[0];
+
+        ticket.desktop = desktop;
+
+        this.last4.unshift( ticket );
+
+        if( this.last4.length > 4 ) {
+            this.last4.splice(-1, 1);
+        };
+
+        this.saveDB();
+        return ticket;
     };
 
 };
