@@ -31,4 +31,7 @@ btnCreate.addEventListener( 'click', () => {
         lblNuevoTicket.innerHTML = ticket;
     });
 
+    //set remaining tickets
+    socket.broadcast.emit( 'tickets-remaining', ticketControl.tickets.length );
+
 });
