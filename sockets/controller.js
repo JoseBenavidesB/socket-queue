@@ -24,7 +24,7 @@ const socketController = (socket) => {
 
     //listen client even attend-ticket
     socket.on( 'attend-ticket', ( payload, callback ) => {
-        console.log(payload);
+        //console.log(payload);
         const { desktop } = payload;
 
         //if there is not any desktop
@@ -42,6 +42,7 @@ const socketController = (socket) => {
         
         //set remaining tickets
         socket.emit( 'tickets-remaining', ticketControl.tickets.length );
+        
         socket.broadcast.emit( 'tickets-remaining', ticketControl.tickets.length );
 
         if ( !ticket ) {
